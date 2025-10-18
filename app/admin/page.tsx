@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { verifyAdminLogin, setAdminSession, isAdminLoggedIn } from '@/lib/auth';
+//import { verifyAdminLogin, setAdminSession, isAdminLoggedIn } from '@/lib/auth';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 export default function AdminLogin() {

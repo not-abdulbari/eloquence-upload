@@ -10,7 +10,6 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
 
 type EventType = 'Paper Presentation' | 'Web Designing' | 'Reels & Photography' | 'Code Debugging' | '';
@@ -35,48 +34,12 @@ export default function Home() {
     setSubmitMessage('');
 
     try {
-      let fileUrl1 = null;
-      let fileUrl2 = null;
+      // Removed Supabase file upload logic
+      // Removed Supabase database insert logic
 
-      if (files.length > 0 && eventType !== 'Web Designing') {
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${Date.now()}_${i}.${fileExt}`;
-          const filePath = `${eventType}/${fileName}`;
-
-          const { error: uploadError } = await supabase.storage
-            .from('submissions')
-            .upload(filePath, file);
-
-          if (uploadError) throw uploadError;
-
-          const { data: { publicUrl } } = supabase.storage
-            .from('submissions')
-            .getPublicUrl(filePath);
-
-          if (i === 0) fileUrl1 = publicUrl;
-          if (i === 1) fileUrl2 = publicUrl;
-        }
-      }
-
-      const { error: insertError } = await supabase
-        .from('submissions')
-        .insert({
-          full_name: fullName,
-          college_name: collegeName,
-          year,
-          branch,
-          contact_email: contactEmail,
-          contact_phone: contactPhone,
-          event_type: eventType,
-          project_title: projectTitle,
-          file_url_1: fileUrl1,
-          file_url_2: fileUrl2,
-          git_repository_url: eventType === 'Web Designing' ? gitUrl : null,
-        });
-
-      if (insertError) throw insertError;
+      // Simulate a successful submission
+      // In a real application, you would send the data to your backend API here
+      // await fetch('/api/submit', { method: 'POST', body: formData });
 
       setSubmitMessage('Submission successful! Thank you for registering.');
 
@@ -109,7 +72,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <EventHeader />
       <EventBanner />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
@@ -119,7 +81,6 @@ export default function Home() {
             <CardDescription>* indicates required field</CardDescription>
           </CardHeader>
           <CardContent>
-            <ProgressIndicator />
 
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-6">
@@ -275,7 +236,7 @@ export default function Home() {
                         value={gitUrl}
                         onChange={(e) => setGitUrl(e.target.value)}
                         required
-                        placeholder="https://github.com/username/repository"
+                        placeholder="https://github.com/username/repository  "
                       />
                     </div>
                   )}

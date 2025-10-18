@@ -1,3 +1,59 @@
+@font-face {
+  font-family: 'Decaydence';
+  src: url('/font/Decaydence.otf') format('opentype'),
+       url('/font/Decaydence Straight.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maximum Voltage';
+  src: url('/font/Maximum Voltage Italic.ttf') format('truetype'),
+       url('/font/Maximum Voltage Italic.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chopsic';
+  src: url('/font/Chopsic.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype Corsiva';
+  src: url('/font/Monotype-Corsiva-Regular.ttf') format('truetype'),
+       url('/font/Monotype-Corsiva-Regular-Italic.ttf') format('truetype'),
+       url('/font/Monotype-Corsiva-Bold.ttf') format('truetype'),
+       url('/font/Monotype-Corsiva-Bold-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Garet';
+  src: url('/font/Garet-Book.woff2') format('woff2'),
+       url('/font/Garet-Book.woff') format('woff'),
+       url('/font/Garet-Book.ttf') format('truetype'),
+       url('/font/Garet-Book.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Garet';
+  src: url('/font/Garet-Heavy.woff2') format('woff2'),
+       url('/font/Garet-Heavy.woff') format('woff'),
+       url('/font/Garet-Heavy.ttf') format('truetype'),
+       url('/font/Garet-Heavy.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

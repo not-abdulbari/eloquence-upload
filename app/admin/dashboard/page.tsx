@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/lib/supabase';
+//import { supabase } from '@/lib/supabase';
 import { FileText, Palette, Camera, Code, Users } from 'lucide-react';
 
 interface Stats {
