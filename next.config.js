@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  experimental: {
-    appDir: true,
-  },
+  output: 'standalone', // required for Cloudflare Pages
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // avoid CI errors
   },
   images: {
-    unoptimized: true,
+    unoptimized: true, // good for CF Pages
   },
 };
 

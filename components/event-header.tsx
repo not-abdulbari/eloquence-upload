@@ -2,7 +2,6 @@
 
 import { ThemeToggle } from './theme-toggle';
 import { Button } from './ui/button';
-import { Calendar, Clock } from 'lucide-react';
 
 export function EventHeader() {
   return (
@@ -12,7 +11,7 @@ export function EventHeader() {
           <div className="flex items-center gap-8">
             <h1 
               className="text-xl font-bold text-foreground" 
-              style={{ fontFamily: 'Decaydence' }}
+              style={{ fontFamily: 'Decaydence', alignItems: 'center', display: 'flex' }}
             >
               ELOQUENCE'25
             </h1>
@@ -72,7 +71,7 @@ export function EventBanner() {
         </p>
 
         <h1
-          className="font-black text-foreground mb-3 tracking-tight"
+          className="font-black text-foreground mb-3 tracking-tight align-items-center flex justify-center"
           style={{
             fontFamily: 'Decaydence',
             letterSpacing: '0.07em', // preserve previous tracking
