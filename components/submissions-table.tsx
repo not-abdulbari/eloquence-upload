@@ -1,0 +1,152 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
+import { Button } from './ui/button';
+import { Download, ExternalLink, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+
+interface Submission {
+  id: string;
+  full_name: string;
+  college_name: string;
+  contact_email: string;
+  project_title: string;
+  submitted_at: string;
+  file_url_1: string | null;
+  file_url_2: string | null;
+  git_repository_url: string | null;
+}
+
+interface SubmissionsTableProps {
+  eventType: string;
+}
+
+export function SubmissionsTable({ eventType }: SubmissionsTableProps) {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [eventType]);
+
+  const fetchSubmissions = async () => {
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from('submissions')
+      .select('*')
+      .eq('event_type', eventType)
+      .order('submitted_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching submissions:', error);
+    } else {
+      setSubmissions(data || []);
+    }
+    setIsLoading(false);
+  };
+
+  const handleDownload = (url: string, fileName: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (submissions.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">No submissions yet for this event.</p>
+      </div>
+    );
+  }
+
+  const isWebDesigning = eventType === 'Web Designing';
+  const hasMultipleFiles = eventType === 'Reels & Photography';
+
+  return (
+    <div className="rounded-lg border border-border overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted/50">
+            <TableHead className="font-semibold">Participant Name</TableHead>
+            <TableHead className="font-semibold">College Name</TableHead>
+            <TableHead className="font-semibold">Contact Email</TableHead>
+            <TableHead className="font-semibold">Project Title</TableHead>
+            <TableHead className="font-semibold">Submitted At</TableHead>
+            <TableHead className="font-semibold">
+              {isWebDesigning ? 'Git Repository URL' : 'Files'}
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {submissions.map((submission) => (
+            <TableRow key={submission.id} className="hover:bg-muted/30">
+              <TableCell className="font-medium">{submission.full_name}</TableCell>
+              <TableCell>{submission.college_name}</TableCell>
+              <TableCell>{submission.contact_email}</TableCell>
+              <TableCell>{submission.project_title}</TableCell>
+              <TableCell>
+                {format(new Date(submission.submitted_at), 'MMM d, yyyy, h:mm a')}
+              </TableCell>
+              <TableCell>
+                {isWebDesigning ? (
+                  submission.git_repository_url ? (
+                    <a
+                      href={submission.git_repository_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-primary hover:underline"
+                    >
+                      Open Repository
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span className="text-muted-foreground">No URL</span>
+                  )
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {submission.file_url_1 && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload(submission.file_url_1!, 'file_1')}
+                        className="w-fit"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        {hasMultipleFiles ? 'Download File 1' : 'Download File'}
+                      </Button>
+                    )}
+                    {hasMultipleFiles && submission.file_url_2 && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownload(submission.file_url_2!, 'file_2')}
+                        className="w-fit"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download File 2
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}

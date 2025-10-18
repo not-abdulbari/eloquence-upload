@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 43% 98%;
+    --foreground: 30 83% 13%;
+    --card: 45 50% 97%;
+    --card-foreground: 30 83% 13%;
+    --popover: 45 50% 97%;
+    --popover-foreground: 30 83% 13%;
+    --primary: 28 55% 35%;
+    --primary-foreground: 45 43% 98%;
+    --secondary: 30 40% 70%;
+    --secondary-foreground: 30 83% 13%;
+    --muted: 30 30% 85%;
+    --muted-foreground: 30 40% 40%;
+    --accent: 28 55% 35%;
+    --accent-foreground: 45 43% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 30% 85%;
+    --input: 30 30% 85%;
+    --ring: 28 55% 35%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 6.7%;
+    --foreground: 0 0% 88%;
+    --card: 0 0% 13.3%;
+    --card-foreground: 0 0% 88%;
+    --popover: 0 0% 13.3%;
+    --popover-foreground: 0 0% 88%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 88%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 72% 51%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 72% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
