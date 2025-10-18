@@ -72,6 +72,8 @@ const mockSubmissions = [
     submittedAt: '2023-04-14T11:30:00Z'
   }
 ];
+export const dynamic = "force-dynamic"; 
+// Prevent Next.js from trying to prerender this route
 
 export async function GET(request: Request) {
   // Get the URL object
