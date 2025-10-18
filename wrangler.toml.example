@@ -1,35 +1,34 @@
-# Eloquence'25 Event Submission System - Wrangler Configuration
 
 name = "eloquence-api"
 main = "workers/eloquence-api.js"
-compatibility_date = "2023-08-01"
+compatibility_date = "2025-10-18"
 
-# Cloudflare Workers environment variables
+# Replace with your Cloudflare account id
+account_id = "c820dd3772865684f453fd3cdbc9ad5a"
+
 [vars]
-R2_PUBLIC_URL = "https://pub-xxxxxxxx.r2.dev"
+# Public URL used to reference uploaded R2 objects (replace with your preview/public URL)
+R2_PUBLIC_URL = "https://s3.eloquence.in.net"
 
-# D1 Database binding
 [[d1_databases]]
 binding = "DB"
 database_name = "eloquence_db"
-database_id = "your_d1_database_id"
+database_id = "ffa9f19f-7590-43b2-9184-6cd3cd38ed09"
 
-# R2 Bucket binding
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "eloquence-submissions"
 preview_bucket_name = "eloquence-submissions-dev"
 
-# Routes configuration for custom domain (uncomment and modify as needed)
-# [routes]
-# pattern = "api.yourdomain.com/*"
-# zone_name = "yourdomain.com"
-
-# Development environment
 [env.dev]
 workers_dev = true
 
-# Local development variables
-# Use these commands to run locally:
-# npx wrangler dev --local --persist
-# npx wrangler d1 execute eloquence_db --local --file=./schema.sql
+name = "eloquence-submit"
+
+[pages]
+build_output_dir = ".next" # Specify the output directory for the Next.js build
+
+
+# Local development notes:
+# - To run the worker in dev mode: `npx wrangler dev`
+# - To seed a local D1 preview with schema: `npx wrangler d1 execute eloquence_db --local --file=./schema.sql`
