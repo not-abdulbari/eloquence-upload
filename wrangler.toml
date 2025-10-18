@@ -24,9 +24,8 @@ workers_dev = true
 
 name = "eloquence-submit"
 
-[build]
-command = "pnpm build"
-publish = ".next" # or "out" if you used next export
+[pages]
+build_output_dir = ".next" # Specify the output directory for the Next.js build
 
 
 # Local development notes:
