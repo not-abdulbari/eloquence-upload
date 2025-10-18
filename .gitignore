@@ -1,3 +1,74 @@
+# Node / JavaScript
+node_modules/
+/.pnp/
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+dist/
+
+# Production
+build/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+.env.test
+.env.production
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+nyc_output/
+
+# Cache
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+
+# Wrangler / Cloudflare preview artifacts
+.wrangler/
+# If you use wrangler --local --persist, preview data may appear in .wrangler/
+
+# R2 / uploads (if you create a local uploads folder during dev)
+uploads/
+tmp/
+temp/
+
+# SSH keys, PEM files
+*.pem
+*.key
+.ssh/
+
+# Misc
+.DS_Store
+.envrc
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

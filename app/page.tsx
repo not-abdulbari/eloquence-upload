@@ -28,21 +28,53 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
+  // Use an explicit API base so we can target the Cloudflare Worker during dev/publish.
+  // If NEXT_PUBLIC_API_URL is not set, the code will fall back to a relative path
+  // allowing the built-in Next.js route at /api/submit to be used during local dev.
+  const apiBase = process.env.NEXT_PUBLIC_API_URL ?? '';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage('');
 
     try {
-      // Removed Supabase file upload logic
-      // Removed Supabase database insert logic
+      // Create form data for submission
+      const formData = new FormData();
+      formData.append('fullName', fullName);
+      formData.append('collegeName', collegeName);
+      formData.append('year', year);
+      formData.append('branch', branch);
+      formData.append('contactEmail', contactEmail);
+      formData.append('contactPhone', contactPhone);
+      formData.append('eventType', eventType);
+      formData.append('projectTitle', projectTitle);
+      
+      if (showGitUrl) {
+        formData.append('gitRepositoryUrl', gitUrl);
+      }
+      
+      if (showFileUpload && files.length > 0) {
+        // Append with the same key 'files' for all files so the server can
+        // use formData.getAll('files') to retrieve them consistently.
+        files.forEach((file) => {
+          formData.append('files', file);
+        });
+      }
 
-      // Simulate a successful submission
-      // In a real application, you would send the data to your backend API here
-      // await fetch('/api/submit', { method: 'POST', body: formData });
+      // Send data to Cloudflare Worker (or Next.js route if apiBase is empty)
+      const response = await fetch(`${apiBase}/api/submit`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
 
       setSubmitMessage('Submission successful! Thank you for registering.');
 
+      // Reset form
       setFullName('');
       setCollegeName('');
       setYear('');

@@ -1,0 +1,27 @@
+name = "eloquence-api"
+main = "workers/eloquence-api.js"
+compatibility_date = "2025-10-18"
+
+# Replace with your Cloudflare account id
+account_id = "c820dd3772865684f453fd3cdbc9ad5a"
+
+[vars]
+# Public URL used to reference uploaded R2 objects (replace with your preview/public URL)
+R2_PUBLIC_URL = "https://s3.eloquence.in.net"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "eloquence_db"
+database_id = "ffa9f19f-7590-43b2-9184-6cd3cd38ed09"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "eloquence-submissions"
+preview_bucket_name = "eloquence-submissions-dev"
+
+[env.dev]
+workers_dev = true
+
+# Local development notes:
+# - To run the worker in dev mode: `npx wrangler dev`
+# - To seed a local D1 preview with schema: `npx wrangler d1 execute eloquence_db --local --file=./schema.sql`

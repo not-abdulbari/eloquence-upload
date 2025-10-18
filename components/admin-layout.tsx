@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminSidebar } from './admin-sidebar';
 import { ThemeToggle } from './theme-toggle';
-import { isAdminLoggedIn } from '@/lib/auth';
+import { isAuthenticated } from '@/lib/auth';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -15,8 +15,8 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAdminLoggedIn()) {
-      router.push('/admin');
+    if (!isAuthenticated()) {
+      router.push('/admin/login');
     }
   }, [router]);
 

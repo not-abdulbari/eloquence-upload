@@ -3,14 +3,13 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-//import { supabase } from '@/lib/supabase';
 import { FileText, Palette, Camera, Code, Users } from 'lucide-react';
 
 interface Stats {
   total: number;
   paperPresentation: number;
   webDesigning: number;
-  reelsPhotography: number;
+  reelsAndPhotography: number;
   codeDebugging: number;
 }
 
@@ -19,7 +18,7 @@ export default function AdminDashboard() {
     total: 0,
     paperPresentation: 0,
     webDesigning: 0,
-    reelsPhotography: 0,
+    reelsAndPhotography: 0,
     codeDebugging: 0,
   });
 
@@ -28,24 +27,43 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchStats = async () => {
-    const { data, error } = await supabase
-      .from('submissions')
-      .select('event_type');
+    try {
+      // Use NEXT_PUBLIC_API_URL if set (so dashboard can query the Worker directly)
+      const apiBase = process.env.NEXT_PUBLIC_API_URL ?? '';
+      const response = await fetch(`${apiBase}/api/submissions/stats`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch stats');
+      }
+  const data = await response.json();
+  const payload = data.stats ? data.stats : data;
 
-    if (error) {
+      // Support two shapes:
+      // - { total, paperPresentation, webDesigning, reelsAndPhotography, codeDebugging }
+      // - an array of submissions (legacy)
+      if (Array.isArray(payload)) {
+        const statsData: Stats = {
+          total: payload.length,
+          paperPresentation: payload.filter((s: any) => s.eventType === 'Paper Presentation').length,
+          webDesigning: payload.filter((s: any) => s.eventType === 'Web Designing').length,
+          reelsAndPhotography: payload.filter((s: any) => s.eventType === 'Reels & Photography').length,
+          codeDebugging: payload.filter((s: any) => s.eventType === 'Code Debugging').length,
+        };
+        setStats(statsData);
+      } else if (data && typeof data === 'object') {
+        const statsData: Stats = {
+          total: payload.total ?? 0,
+          paperPresentation: payload.byEventType?.['Paper Presentation'] ?? payload.paperPresentation ?? 0,
+          webDesigning: payload.byEventType?.['Web Designing'] ?? payload.webDesigning ?? 0,
+          reelsAndPhotography: payload.byEventType?.['Reels & Photography'] ?? payload.reelsAndPhotography ?? 0,
+          codeDebugging: payload.byEventType?.['Code Debugging'] ?? payload.codeDebugging ?? 0,
+        };
+        setStats(statsData);
+      } else {
+        throw new Error('Unexpected stats response');
+      }
+    } catch (error) {
       console.error('Error fetching stats:', error);
-      return;
     }
-
-    const statsData: Stats = {
-      total: data.length,
-      paperPresentation: data.filter(s => s.event_type === 'Paper Presentation').length,
-      webDesigning: data.filter(s => s.event_type === 'Web Designing').length,
-      reelsPhotography: data.filter(s => s.event_type === 'Reels & Photography').length,
-      codeDebugging: data.filter(s => s.event_type === 'Code Debugging').length,
-    };
-
-    setStats(statsData);
   };
 
   const statCards = [
@@ -69,7 +87,7 @@ export default function AdminDashboard() {
     },
     {
       title: 'Reels & Photography',
-      value: stats.reelsPhotography,
+      value: stats.reelsAndPhotography,
       icon: Camera,
       color: 'text-pink-600 dark:text-pink-400',
     },

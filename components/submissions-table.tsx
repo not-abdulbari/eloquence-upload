@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Button } from './ui/button';
 import { Download, ExternalLink, Loader2 } from 'lucide-react';
@@ -33,16 +32,41 @@ export function SubmissionsTable({ eventType }: SubmissionsTableProps) {
 
   const fetchSubmissions = async () => {
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from('submissions')
-      .select('*')
-      .eq('event_type', eventType)
-      .order('submitted_at', { ascending: false });
+    try {
+      // Use NEXT_PUBLIC_API_URL if set so the admin can query the Worker directly
+      const apiBase = (process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '');
+      const endpoint = apiBase ? `${apiBase}/api/submissions?eventType=${encodeURIComponent(eventType)}` : `/api/submissions?eventType=${encodeURIComponent(eventType)}`;
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error('Failed to fetch submissions');
+      }
+      const data = await response.json();
 
-    if (error) {
+      // The response may be { submissions: [...] } (Worker) or an array (mock)
+      let rows: any[] = [];
+      if (Array.isArray(data)) rows = data;
+      else if (data && Array.isArray(data.submissions)) rows = data.submissions;
+      else if (data && Array.isArray(data.results)) rows = data.results; // guard
+
+      // Normalize each row to the UI's expected Submission shape
+      const normalized: Submission[] = rows.map((r: any) => {
+        const filesFromFilesArray = r.files?.map((f: any) => f.fileUrl).filter(Boolean) || r.fileUrls || r.file_urls || [];
+        return {
+          id: r.id || r.submissionId || r._id || '',
+          full_name: r.fullName || r.full_name || r.name || '',
+          college_name: r.collegeName || r.college_name || r.college || '',
+          contact_email: r.contactEmail || r.contact_email || r.email || '',
+          project_title: r.projectTitle || r.project_title || r.title || '',
+          submitted_at: r.submittedAt || r.submitted_at || r.uploadedAt || r.submitted_at || new Date().toISOString(),
+          file_url_1: filesFromFilesArray[0] || r.fileUrl || r.file_url_1 || null,
+          file_url_2: filesFromFilesArray[1] || r.file_url_2 || null,
+          git_repository_url: r.gitUrl || r.gitRepositoryUrl || r.git_repository_url || null,
+        };
+      });
+
+      setSubmissions(normalized);
+    } catch (error) {
       console.error('Error fetching submissions:', error);
-    } else {
-      setSubmissions(data || []);
     }
     setIsLoading(false);
   };

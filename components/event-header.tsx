@@ -53,54 +53,51 @@ export function EventBanner() {
     <div className="w-full py-12 sm:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p 
-          className="text-sm sm:text-base font-medium text-muted-foreground uppercase tracking-wide mb-2"
+          className="text-sm sm:text-xl font-semibold text-primary mb-1 uppercase"
           style={{ fontFamily: 'Helvetica' }}
         >
           C. Abdul Hakeem College of Engineering and Technology
         </p>
         <p 
-          className="text-xs sm:text-sm text-muted-foreground mb-1"
+          className="text-sm sm:text-xl text-primary mb-1"
           style={{ fontFamily: 'Helvetica' }}
         >
           Department of Computer Science and Engineering
         </p>
         <p 
-          className="text-xs sm:text-sm italic text-muted-foreground mb-6"
+          className="text-sm sm:text-xl text-primary mb-2"
           style={{ fontFamily: 'Monotype Corsiva, cursive' }}
         >
           proudly presents
         </p>
 
-        <h1 
-          className="text-5xl sm:text-6xl lg:text-7xl font-black text-foreground mb-3 tracking-tight"
-          style={{ 
+        <h1
+          className="font-black text-foreground mb-3 tracking-tight"
+          style={{
             fontFamily: 'Decaydence',
-            letterSpacing: '0.07em' // Added similar tracking from your example
+            letterSpacing: '0.07em', // preserve previous tracking
+            // Fluid responsive size (smaller): min 1.75rem, scales with viewport, max 3.25rem
+            fontSize: 'clamp(1.7rem, 4.5vw, 3.25rem)',
+            alignItems: 'center',
+            textAlign: 'center',
+            display: 'flex',
           }}
         >
           ELOQUENCE'25
         </h1>
 
         <p 
-          className="text-lg sm:text-xl font-semibold text-primary mb-8"
+          className="text-sm sm:text-xl font-semibold text-primary mb-4"
           style={{ fontFamily: 'Helvetica' }}
         >
           8th National Level Technical Symposium
         </p>
 
         <div 
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base"
+          className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm sm:text-base"
           style={{ fontFamily: 'Helvetica' }}
         >
-          <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
-            <span className="font-medium">November 1, 2025</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-primary" />
-            <span className="font-medium">9:00 AM - 5:00 PM</span>
-          </div>
-        </div>
       </div>
     </div>
   );

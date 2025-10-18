@@ -13,6 +13,7 @@ interface FileUploadProps {
 
 export function FileUpload({ maxFiles, acceptedTypes, files, onFilesChange }: FileUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [fileTypeError, setFileTypeError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -25,18 +26,56 @@ export function FileUpload({ maxFiles, acceptedTypes, files, onFilesChange }: Fi
     setIsDragging(false);
   };
 
+  const validateFileType = (file: File): boolean => {
+    if (!acceptedTypes) return true;
+    
+    const fileType = file.type;
+    const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
+    
+    // Check if the file type matches any of the accepted types
+    const types = acceptedTypes.split(',');
+    return types.some(type => {
+      if (type.includes('*')) {
+        // Handle wildcards like image/* or video/*
+        return fileType.startsWith(type.split('*')[0]);
+      } else {
+        // Handle specific extensions like .pdf, .doc
+        return type.trim() === fileExtension;
+      }
+    });
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
+    setFileTypeError(null);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
+    
+    // Validate file types
+    const invalidFile = droppedFiles.find(file => !validateFileType(file));
+    if (invalidFile) {
+      setFileTypeError(`File "${invalidFile.name}" is not an accepted file type.`);
+      return;
+    }
+    
     const newFiles = [...files, ...droppedFiles].slice(0, maxFiles);
     onFilesChange(newFiles);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileTypeError(null);
+    
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
+      
+      // Validate file types
+      const invalidFile = selectedFiles.find(file => !validateFileType(file));
+      if (invalidFile) {
+        setFileTypeError(`File "${invalidFile.name}" is not an accepted file type.`);
+        return;
+      }
+      
       const newFiles = [...files, ...selectedFiles].slice(0, maxFiles);
       onFilesChange(newFiles);
     }
@@ -87,6 +126,12 @@ export function FileUpload({ maxFiles, acceptedTypes, files, onFilesChange }: Fi
         </div>
       </div>
 
+      {fileTypeError && (
+        <div className="mt-2 text-sm text-red-500">
+          {fileTypeError}
+        </div>
+      )}
+
       {files.length > 0 && (
         <div className="mt-4 space-y-2">
           {files.map((file, index) => (
@@ -119,6 +164,12 @@ export function FileUpload({ maxFiles, acceptedTypes, files, onFilesChange }: Fi
               </Button>
             </div>
           ))}
+        </div>
+      )}
+      
+      {maxFiles > 1 && (
+        <div className="mt-2 text-xs text-muted-foreground">
+          You can upload up to {maxFiles} files. {maxFiles === 2 && "For Reels & Photography, please upload both image and video files."}
         </div>
       )}
     </div>
