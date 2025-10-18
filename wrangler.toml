@@ -22,7 +22,7 @@ preview_bucket_name = "eloquence-submissions-dev"
 [env.dev]
 workers_dev = true
 
-name = "eloquence-upload"
+name = "eloquence-submit"
 
 [build]
 command = "pnpm build"
