@@ -25,8 +25,8 @@ workers_dev = true
 name = "eloquence-upload"
 
 [build]
-command = "pnpm run build"
-pages_build_output_dir = ".vercel/output"
+command = "pnpm build"
+publish = ".next" # or "out" if you used next export
 
 
 # Local development notes:
