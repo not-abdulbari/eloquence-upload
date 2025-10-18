@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+
 import { NextResponse } from 'next/server';
 import { uploadFileToR2, generateUniqueFileName } from '@/lib/cloudflare';
 
