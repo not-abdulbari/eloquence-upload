@@ -1,3 +1,8 @@
+name = "eloquence-submit"
+
+[pages]
+build_output_dir = ".next" # Specify the output directory for the Next.js build
+
 name = "eloquence-api"
 main = "workers/eloquence-api.js"
 compatibility_date = "2025-10-18"
