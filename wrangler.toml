@@ -1,7 +1,0 @@
-name = "eloquence-submit"
-
-[pages]
-# Cloudflare Pages expects a static build output dir. We'll export Next.js to `out`.
-# Use `pages_build_output_dir` so Pages recognizes this file as a Pages config.
-pages_build_output_dir = ".next"
-
