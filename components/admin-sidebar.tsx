@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, FileText, Palette, Clapperboard, Code, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Palette, Clapperboard, Receipt, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 import { clearAdminSession } from '@/lib/auth';
 
@@ -10,7 +10,7 @@ const navItems = [
   { icon: FileText, label: 'Paper Presentation', href: '/admin/dashboard/paper-presentation' },
   { icon: Palette, label: 'Web Designing', href: '/admin/dashboard/web-designing' },
 { icon: Clapperboard, label: 'Reels & Photography', href: '/admin/dashboard/reels' },
-  { icon: Code, label: 'Code Debugging', href: '/admin/dashboard/code-debugging' },
+  { icon: Receipt, label: 'Poster Designing', href: '/admin/dashboard/code-debugging' },
 ];
 
 export function AdminSidebar() {
