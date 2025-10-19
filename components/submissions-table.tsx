@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Button } from './ui/button';
 import { Download, ExternalLink, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+// Use Intl.DateTimeFormat with Asia/Kolkata timezone (GMT+5:30)
+
 
 interface Submission {
   id: string;
@@ -123,7 +124,23 @@ export function SubmissionsTable({ eventType }: SubmissionsTableProps) {
               <TableCell>{submission.contact_email}</TableCell>
               <TableCell>{submission.project_title}</TableCell>
               <TableCell>
-                {format(new Date(submission.submitted_at), 'MMM d, yyyy, h:mm a')}
+                {(() => {
+                  try {
+                    const dt = new Date(submission.submitted_at);
+                    const fmt = new Intl.DateTimeFormat('en-GB', {
+                      timeZone: 'Asia/Kolkata',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true,
+                    });
+                    return fmt.format(dt);
+                  } catch (e) {
+                    return submission.submitted_at;
+                  }
+                })()}
               </TableCell>
               <TableCell>
                 {isWebDesigning ? (

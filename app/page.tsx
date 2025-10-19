@@ -50,8 +50,9 @@ export default function Home() {
       formData.append('eventType', eventType);
       formData.append('projectTitle', projectTitle);
       
+      // FIXED: Use 'gitUrl' to match backend expectation
       if (showGitUrl) {
-        formData.append('gitRepositoryUrl', gitUrl);
+        formData.append('gitUrl', gitUrl);
       }
       
       if (showFileUpload && files.length > 0) {
@@ -68,8 +69,10 @@ export default function Home() {
         body: formData,
       });
 
+      const result = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Submission failed');
+        throw new Error(result.error || 'Submission failed');
       }
 
       setSubmitMessage('Submission successful! Thank you for registering.');
@@ -85,9 +88,9 @@ export default function Home() {
       setProjectTitle('');
       setFiles([]);
       setGitUrl('');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
-      setSubmitMessage('Submission failed. Please try again.');
+      setSubmitMessage(error.message || 'Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -268,7 +271,7 @@ export default function Home() {
                         value={gitUrl}
                         onChange={(e) => setGitUrl(e.target.value)}
                         required
-                        placeholder="https://github.com/username/repository  "
+                        placeholder="https://github.com/username/repository"
                       />
                     </div>
                   )}
