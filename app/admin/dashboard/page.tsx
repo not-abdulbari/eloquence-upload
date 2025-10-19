@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Palette, Camera, Code, Users } from 'lucide-react';
+import { FileText, Palette, Camera, Receipt, Users } from 'lucide-react';
 
 interface Stats {
   total: number;
@@ -92,9 +92,9 @@ export default function AdminDashboard() {
       color: 'text-pink-600 dark:text-pink-400',
     },
     {
-      title: 'Code Debugging',
+      title: 'Poster Designing',
       value: stats.codeDebugging,
-      icon: Code,
+      icon: Receipt,
       color: 'text-orange-600 dark:text-orange-400',
     },
   ];

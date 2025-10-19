@@ -224,7 +224,7 @@ export default function Home() {
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="Code Debugging" id="code" />
                       <Label htmlFor="code" className="font-normal cursor-pointer">
-                        Code Debugging
+                        Poster Designing
                       </Label>
                     </div>
                   </RadioGroup>
